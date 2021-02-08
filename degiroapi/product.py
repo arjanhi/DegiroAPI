@@ -49,3 +49,7 @@ class Product:
     @property
     def close_price_date(self):
         return self.__close_price_date
+
+    @property
+    def is_option(self):  # stock option?
+        return self.product_type == 8
