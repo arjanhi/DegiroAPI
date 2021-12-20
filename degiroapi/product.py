@@ -13,6 +13,9 @@ class Product:
         self.__close_price = product.get('closePrice')
         close_price_date = product.get('closePriceDate')
         self.__close_price_date = datetime.strptime(close_price_date, '%Y-%m-%d').date() if close_price_date else None
+        expiration_date = product.get('expirationDate')
+        self.__expiration_date = datetime.strptime(expiration_date, '%d-%m-%Y').date() if expiration_date else None
+        self.__strike_price = product.get('strikePrice')
 
     @property
     def id(self):
@@ -49,6 +52,14 @@ class Product:
     @property
     def close_price_date(self):
         return self.__close_price_date
+
+    @property
+    def expiration_date(self):
+        return self.__expiration_date
+
+    @property
+    def strike_price(self):
+        return self.__strike_price
 
     @property
     def is_option(self):  # stock option?
