@@ -3,6 +3,7 @@ from datetime import datetime
 
 class Product:
     def __init__(self, product):
+        self.props = product  # for later access to any property which is not included below
         self.__id = product['id']
         self.__name = product['name']
         self.__isin = product['isin']
@@ -16,6 +17,10 @@ class Product:
         expiration_date = product.get('expirationDate')
         self.__expiration_date = datetime.strptime(expiration_date, '%d-%m-%Y').date() if expiration_date else None
         self.__strike_price = product.get('strikePrice')
+
+    def __getitem__(self, item):
+        """e.g. product["exchangeId"] """
+        return self.props[item]
 
     @property
     def id(self):

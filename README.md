@@ -178,6 +178,23 @@ degiro.sellorder(Order.Type.MARKET, Product(products[0]).id, 3, 1)
 degiro.sellorder(Order.Type.STOPLOSS, Product(products[0]).id, 3, 1, None, 38)
 ```
 
+## property `id_dictionary`
+Dictionary of many different IDs that Degiro uses to encode various properties, e.g. Product's `exchangeId`.
+```python
+list(degiro.id_dictionary.keys())  # all lists currently available
+# ['stockCountries', 'bondExchanges', 'bondIssuerTypes', 'eurexCountries', 'futureExchanges',
+#  'optionExchanges', 'combinationExchanges', 'cfdExchanges', 'exchanges', 'indices', 'regions',
+#  'countries', 'productTypes', 'etfFeeTypes', 'investmentFundFeeTypes', 'optionAggregateTypes',
+#  'leveragedAggregateTypes', 'etfAggregateTypes', 'investmentFundAggregateTypes', 'lookupSortColumns',
+#  'stockSortColumns', 'bondSortColumns', 'cfdSortColumns', 'etfSortColumns', 'futureSortColumns',
+#  'investmentFundSortColumns', 'leveragedSortColumns', 'optionSortColumns']
+fresenius = degiro.search_products('DE0005785604')[0]
+ex_id = fresenius["exchangeId"]  # == '196'
+degiro.id_dictionary["exchanges"][ex_id]
+# result: {'id': 196, 'code': 'XGAT', 'hiqAbbr': 'TDG', 'country': 'DE',
+#          'city': 'Frankfurt', 'micCode': 'XGAT', 'name': 'Tradegate AG'}
+```
+
 
 ## Usage
 For documented examples see [examples.py](https://github.com/lolokraus/DegiroAPI/blob/master/examples/examples.py)

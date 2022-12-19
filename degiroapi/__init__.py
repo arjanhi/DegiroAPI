@@ -5,7 +5,7 @@ from degiroapi.datatypes import Data
 from degiroapi.intervaltypes import Interval
 
 
-class DeGiro:
+class DeGiro(object):
     __LOGIN_URL = 'https://trader.degiro.nl/login/secure/login'
     __LOGIN_TOTP_URL = 'https://trader.degiro.nl/login/secure/login/totp'
     __CONFIG_URL = 'https://trader.degiro.nl/login/secure/config'
@@ -17,6 +17,7 @@ class DeGiro:
     __GET_STOCKS_URL = 'https://trader.degiro.nl/products_s/secure/v5/stocks'
     __PRODUCT_SEARCH_URL = 'https://trader.degiro.nl/product_search/secure/v5/products/lookup'
     __PRODUCT_INFO_URL = 'https://trader.degiro.nl/product_search/secure/v5/products/info'
+    __ID_DICTIONARY_URL = 'https://trader.degiro.nl/product_search/config/dictionary'
     __TRANSACTIONS_URL = 'https://trader.degiro.nl/reporting/secure/v4/transactions'
     __ORDERS_URL = 'https://trader.degiro.nl/reporting/secure/v4/order-history'
     __ACCOUNT_URL = 'https://trader.degiro.nl/reporting/secure/v6/accountoverview'
@@ -36,6 +37,9 @@ class DeGiro:
     session_id = any
     client_info = any
     confirmation_id = any
+
+    def __init__(self):
+        self._id_dictionary = None
 
     def login(self, username, password, totp=None):
         login_payload = {
@@ -126,6 +130,15 @@ class DeGiro:
                               data=json.dumps([str(product_id)]),
                               request_type=DeGiro.__POST_REQUEST,
                               error_message='Could not get product info.')['data'][str(product_id)]
+
+    @property
+    def id_dictionary(self):
+        if self._id_dictionary:  # already cached
+            return self._id_dictionary
+
+        raw_dict = self.__request(DeGiro.__ID_DICTIONARY_URL, error_message='Could not get Degiro ID dictionary.')
+        self._id_dictionary = {k: {str(i["id"]): i for i in ids} for k, ids in raw_dict.items()}
+        return self._id_dictionary
 
     def transactions(self, from_date, to_date, group_transactions=False):
         transactions_payload = {
