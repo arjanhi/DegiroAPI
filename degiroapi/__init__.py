@@ -286,14 +286,14 @@ class DeGiro:
             raise Exception('Invalid time type')
 
         place_check_order_response = self.__request(DeGiro.__PLACE_ORDER_URL + ';jsessionid=' + self.session_id, None,
-                                                    place_buy_order_payload, place_buy_order_params,
+                                                    place_buy_order_payload, post_params=place_buy_order_params,
                                                     request_type=DeGiro.__POST_REQUEST,
                                                     error_message='Could not place order')
 
         self.confirmation_id = place_check_order_response['data']['confirmationId']
 
         self.__request(DeGiro.__ORDER_URL + self.confirmation_id + ';jsessionid=' + self.session_id, None,
-                       place_buy_order_payload, place_buy_order_params,
+                       place_buy_order_payload, post_params=place_buy_order_params,
                        request_type=DeGiro.__POST_REQUEST,
                        error_message='Could not confirm order')
 
@@ -319,14 +319,14 @@ class DeGiro:
             raise Exception('Invalid time type')
 
         place_check_order_response = self.__request(DeGiro.__PLACE_ORDER_URL + ';jsessionid=' + self.session_id, None,
-                                                    place_sell_order_payload, place_sell_order_params,
+                                                    place_sell_order_payload, post_params=place_sell_order_params,
                                                     request_type=DeGiro.__POST_REQUEST,
                                                     error_message='Could not place order')
 
         self.confirmation_id = place_check_order_response['data']['confirmationId']
 
         self.__request(DeGiro.__ORDER_URL + self.confirmation_id + ';jsessionid=' + self.session_id, None,
-                       place_sell_order_payload, place_sell_order_params,
+                       place_sell_order_payload, post_params=place_sell_order_params,
                        request_type=DeGiro.__POST_REQUEST,
                        error_message='Could not confirm order')
 
