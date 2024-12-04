@@ -183,7 +183,7 @@ class DeGiro(object):
         data_not_executed = []
         if not_executed:
             for d in data:
-                if d['isActive']:
+                if d['active']:
                     data_not_executed.append(d)
             return data_not_executed
         else:
